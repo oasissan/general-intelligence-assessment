@@ -5,9 +5,8 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@components/ui/chart";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Area, AreaChart } from "recharts";
 
 export type ScoredResult = TestResults[TestName] & {
