@@ -9,6 +9,7 @@ import { i18n, type Locale } from "@/i18n";
 import dataEn from "./data-en";
 import dataPl from "./data-pl";
 import dataEs from "./data-es";
+import dataIt from "./data-it";
 import dataFr from "./data-fr";
 import { logOnIncorrect } from "@components/TestApp/logOnIncorrect";
 
@@ -76,6 +77,9 @@ function generateQuestion(locale: Locale) {
       break;
     case "es":
       data = dataEs;
+      break;
+    case "it":
+      data = dataIt;
       break;
     case "fr":
       data = dataFr;
