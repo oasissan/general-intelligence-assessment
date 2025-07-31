@@ -1,12 +1,10 @@
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n } from "@/i18n";
+import { useTranslations } from "@/contexts/TranslationsContext";
 import type { TestName, TestResults } from "@components/TestApp/types";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@components/ui/chart";
-import { useContext } from "react";
 import { Area, AreaChart } from "recharts";
 
 export type ScoredResult = TestResults[TestName] & {
@@ -15,8 +13,7 @@ export type ScoredResult = TestResults[TestName] & {
 
 const ResultsChart = (props: { results: ScoredResult[] }) => {
   const { results } = props;
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "charts");
+  const t = useTranslations("charts");
 
   const chartConfig = {
     numCorrect: {

@@ -1,21 +1,20 @@
 import { chooseRandom, pickRandom, randomBool } from "@/random";
 import { Card, CardFooter, CardHeader, CardTitle } from "@components/ui/card";
-import React, { useContext } from "react";
+import React from "react";
 import { TestName, type TestProps } from "@components/TestApp/types";
 import TestIntro from "@components/TestApp/TestIntro";
 import TestButton from "@components/TestApp/TestButton";
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n, type Locale } from "@/i18n";
+import { type Locale } from "@/i18n";
 import dataEn from "./data-en";
 import dataPl from "./data-pl";
 import dataEs from "./data-es";
 import dataIt from "./data-it";
 import dataFr from "./data-fr";
 import { logOnIncorrect } from "@components/TestApp/logOnIncorrect";
+import { useTranslations } from "@/contexts/TranslationsContext";
 
 const Reasoning = (props: TestProps) => {
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "reasoning");
+  const t = useTranslations("reasoning");
   const { onCorrectAnswer, onIncorrectAnswer, testState } = props;
   const [question, setQuestion] = React.useState(() =>
     generateQuestion(locale),

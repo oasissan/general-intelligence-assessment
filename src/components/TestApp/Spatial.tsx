@@ -1,5 +1,4 @@
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n } from "@/i18n";
+import { useTranslations } from "@/contexts/TranslationsContext";
 import { chooseRandom, pickRandom, randomBool, randomInt } from "@/random";
 import { logOnIncorrect } from "@components/TestApp/logOnIncorrect";
 import TestButton from "@components/TestApp/TestButton";
@@ -13,12 +12,11 @@ import {
   CardFooter,
   CardDescription,
 } from "@components/ui/card";
-import React, { useContext } from "react";
+import React from "react";
 
 const Spatial = (props: TestProps) => {
   const { onCorrectAnswer, onIncorrectAnswer, testState } = props;
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "spatial-visualization");
+  const t = useTranslations("spatial-visualization");
   const [question, setQuestion] = React.useState(generateQuestion);
 
   const onAnswer = (answer: number) => {

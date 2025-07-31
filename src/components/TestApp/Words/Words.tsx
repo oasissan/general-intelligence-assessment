@@ -8,15 +8,14 @@ import { categories as categoriesPl } from "./data-pl";
 import { categories as categoriesEs } from "./data-es";
 import { categories as categoriesIt } from "./data-it";
 import { categories as categoriesFr } from "./data-fr";
-import React, { useContext } from "react";
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n, type Locale } from "@/i18n";
+import React from "react";
+import { type Locale } from "@/i18n";
 import { logOnIncorrect } from "@components/TestApp/logOnIncorrect";
+import { useTranslations } from "@/contexts/TranslationsContext";
 
 const Words = (props: TestProps) => {
   const { onCorrectAnswer, onIncorrectAnswer, testState } = props;
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "words-meaning");
+  const t = useTranslations("words-meaning");
   const [question, setQuestion] = React.useState(() =>
     generateQuestion(locale),
   );

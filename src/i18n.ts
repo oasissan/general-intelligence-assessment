@@ -338,19 +338,22 @@ const ui = {
   [namespace: string]: { [key: string]: { [locale in Locale]: string } };
 };
 
-// TODO: Pass to React only baked-in translations in order not to send to the client all the translations for every locale
-// export type TranslationsWithBakedInLocale = { [namespace in keyof typeof ui]: { [key in keyof typeof ui[namespace]]: string } };
+export type LocaleBakedTranslations = {
+  [namespace in keyof typeof ui]: {
+    [key in keyof (typeof ui)[namespace]]: string;
+  };
+};
 
-// export function bakeTranslations(locale: Locale) {
-//   return Object.fromEntries(
-//     Object.entries(ui).map(([namespace, translations]) => [
-//       namespace,
-//       Object.fromEntries(
-//         Object.entries(translations).map(([key, value]) => [
-//           key,
-//           value[locale],
-//         ]),
-//       ),
-//     ]),
-//   ) as TranslationsWithBakedInLocale;
-// }
+export function bakeLocaleTranslations(locale: Locale) {
+  return Object.fromEntries(
+    Object.entries(ui).map(([namespace, translations]) => [
+      namespace,
+      Object.fromEntries(
+        Object.entries(translations).map(([key, value]) => [
+          key,
+          value[locale],
+        ]),
+      ),
+    ]),
+  ) as LocaleBakedTranslations;
+}
