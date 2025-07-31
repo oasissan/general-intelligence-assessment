@@ -1,25 +1,21 @@
 import { chooseRandom, pickRandom, randomBool } from "@/random";
 import { Card, CardFooter, CardHeader, CardTitle } from "@components/ui/card";
-import React, { useContext } from "react";
-import { TestName, type TestProps } from "@components/TestApp/types";
+import React from "react";
+import {
+  TestName,
+  type ReasoningData,
+  type TestProps,
+} from "@components/TestApp/types";
 import TestIntro from "@components/TestApp/TestIntro";
 import TestButton from "@components/TestApp/TestButton";
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n, type Locale } from "@/i18n";
-import dataEn from "./data-en";
-import dataPl from "./data-pl";
-import dataEs from "./data-es";
-import dataIt from "./data-it";
-import dataFr from "./data-fr";
 import { logOnIncorrect } from "@components/TestApp/logOnIncorrect";
+import { useTranslations } from "@/contexts/TranslationsContext";
+import { useTestData } from "@/contexts/TestDataContext";
 
 const Reasoning = (props: TestProps) => {
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "reasoning");
+  const t = useTranslations("reasoning");
   const { onCorrectAnswer, onIncorrectAnswer, testState } = props;
-  const [question, setQuestion] = React.useState(() =>
-    generateQuestion(locale),
-  );
+  const { question, newQuestion } = useQuestion();
   const [isStatementPhase, setIsStatementPhase] = React.useState(true);
 
   const onAnswer = (answer: string) => {
@@ -31,7 +27,7 @@ const Reasoning = (props: TestProps) => {
     }
 
     setIsStatementPhase(true);
-    setQuestion(generateQuestion(locale));
+    newQuestion();
   };
 
   if (testState === "intro")
@@ -69,24 +65,22 @@ const Reasoning = (props: TestProps) => {
 
 export default Reasoning;
 
-function generateQuestion(locale: Locale) {
-  let data: { names: string[]; comparisons: any[]; question: string };
-  switch (locale) {
-    case "pl":
-      data = dataPl;
-      break;
-    case "es":
-      data = dataEs;
-      break;
-    case "it":
-      data = dataIt;
-      break;
-    case "fr":
-      data = dataFr;
-      break;
-    default:
-      data = dataEn;
-  }
+function useQuestion() {
+  const data = useTestData(TestName.REASONING);
+
+  const [question, setQuestion] = React.useState(() => generateQuestion(data));
+
+  const newQuestion = React.useCallback(() => {
+    setQuestion(generateQuestion(data));
+  }, [data]);
+
+  return {
+    question,
+    newQuestion,
+  };
+}
+
+function generateQuestion(data: ReasoningData) {
   const { names, comparisons, question: questionStart } = data;
 
   const comparison = pickRandom(comparisons);

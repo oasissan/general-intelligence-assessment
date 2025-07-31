@@ -4,15 +4,17 @@ export const LOCALES = ["en", "pl", "es", "it", "fr"] as const;
 export const DEFAULT_LOCALE = "en" as const;
 export type Locale = (typeof LOCALES)[number];
 
+type LocaleValues = {
+  [locale in Locale]: string;
+};
+
 export const SWITCH_LOCALE_LABELS = {
   en: "Switch to English",
   pl: "Zmień na polski",
   es: "Cambiar a español",
   it: "Passa all'italiano",
   fr: "Passer en français",
-} as const satisfies {
-  [locale in Locale]: string;
-};
+} as const satisfies LocaleValues;
 
 export function getLocale(url: URL): Locale {
   const path = url.pathname;
@@ -32,34 +34,10 @@ export function delocalizePath(url: URL): string {
   return url.pathname.replace(`/${locale}`, "");
 }
 
-type TranslationFunction = <N extends keyof typeof ui>(
-  namespace: N,
-  key: keyof (typeof ui)[N],
-) => string;
-type TranslationFunctionWithBakedInNamespace<N extends keyof typeof ui> = (
-  key: keyof (typeof ui)[N],
-) => string;
-
-export function i18n(locale: Locale): TranslationFunction;
-export function i18n<N extends keyof typeof ui>(
-  locale: Locale,
-  namespace: N,
-): TranslationFunctionWithBakedInNamespace<N>;
-export function i18n<N extends keyof typeof ui>(
-  locale: Locale,
-  namespace?: N,
-): TranslationFunction | TranslationFunctionWithBakedInNamespace<N> {
-  if (namespace === undefined) {
-    return <N extends keyof typeof ui>(
-      namespace: N,
-      key: keyof (typeof ui)[N],
-      // TODO: Why is this type assertion needed?
-    ) => (ui[namespace][key] as { [locale in Locale]: string })[locale];
-  }
-
+export function i18n<N extends keyof typeof ui>(locale: Locale, namespace: N) {
   return (key: keyof (typeof ui)[N]) =>
     // TODO: Why is this type assertion needed?
-    (ui[namespace][key] as { [locale in Locale]: string })[locale];
+    (ui[namespace][key] as LocaleValues)[locale];
 }
 
 const ui = {
@@ -335,22 +313,25 @@ const ui = {
     },
   },
 } as const satisfies {
-  [namespace: string]: { [key: string]: { [locale in Locale]: string } };
+  [namespace: string]: { [key: string]: LocaleValues };
 };
 
-// TODO: Pass to React only baked-in translations in order not to send to the client all the translations for every locale
-// export type TranslationsWithBakedInLocale = { [namespace in keyof typeof ui]: { [key in keyof typeof ui[namespace]]: string } };
+export type LocaleBakedTranslations = {
+  [namespace in keyof typeof ui]: {
+    [key in keyof (typeof ui)[namespace]]: string;
+  };
+};
 
-// export function bakeTranslations(locale: Locale) {
-//   return Object.fromEntries(
-//     Object.entries(ui).map(([namespace, translations]) => [
-//       namespace,
-//       Object.fromEntries(
-//         Object.entries(translations).map(([key, value]) => [
-//           key,
-//           value[locale],
-//         ]),
-//       ),
-//     ]),
-//   ) as TranslationsWithBakedInLocale;
-// }
+export function bakeLocaleTranslations(locale: Locale) {
+  return Object.fromEntries(
+    Object.entries(ui).map(([namespace, translations]) => [
+      namespace,
+      Object.fromEntries(
+        Object.entries(translations).map(([key, value]) => [
+          key,
+          value[locale],
+        ]),
+      ),
+    ]),
+  ) as LocaleBakedTranslations;
+}

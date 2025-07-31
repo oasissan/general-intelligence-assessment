@@ -1,4 +1,6 @@
-export const categories = [
+import type { WordsMeaningData } from "@components/TestApp/types";
+
+export default [
   ["Clé", "Tournevis", "Marteau", "Pince", "Perceuse"], // Tous les mots sont des outils utilisés pour le travail mécanique (noms)
   ["Adorable", "Charmant", "Joli", "Mignon", "Attendrissant"], // Tous les mots décrivent des qualités agréables ou attirantes (adjectifs)
   ["Cuisiner", "Cuire", "Griller", "Sauter", "Rôtir"], // Tous les mots décrivent des méthodes de préparation des aliments (verbes)
@@ -50,4 +52,4 @@ export const categories = [
   ["Criminel", "Délinquant", "Suspect", "Auteur", "Hors-la-loi"], // Tous les mots décrivent des personnes impliquées dans des activités illégales (noms)
   ["Obstacle", "Barrière", "Entrave", "Défi", "Impediment"], // Tous les mots décrivent ce qui entrave le progrès (noms)
   ["Musée", "Galerie", "Exposition", "Vitrine", "Collection"], // Tous les mots sont liés à des lieux ou événements d'art (noms)
-];
+] satisfies WordsMeaningData;

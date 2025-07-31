@@ -10,11 +10,10 @@ import { Checkbox } from "@components/ui/checkbox";
 import { Label } from "@components/ui/label";
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import "@components/TestApp/TestSelector/TestSelector.css";
-import React, { useContext } from "react";
+import React from "react";
 import { TestName } from "@components/TestApp/types";
 import TestSelectorOption from "@components/TestApp/TestSelector/TestSelectorOption";
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n } from "@/i18n";
+import { useTranslations } from "@/contexts/TranslationsContext";
 
 export type TestOption = {
   name: TestName;
@@ -26,8 +25,7 @@ const TestSelector = (props: {
   setTestOptions: (options: TestOption[]) => void;
   onStartTest: () => void;
 }) => {
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale, "test-selector");
+  const t = useTranslations("test-selector");
 
   const { testOptions, setTestOptions, onStartTest } = props;
 

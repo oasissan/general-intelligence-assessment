@@ -6,6 +6,7 @@ import {
   SWITCH_LOCALE_LABELS,
   i18n,
 } from "@/i18n";
+import Flag from "@components/Flag.astro";
 import Link from "@components/Link.astro";
 import "@styles/global.css";
 import { SEO } from "astro-seo";
@@ -54,20 +55,26 @@ const t = i18n(locale, "layout");
   <body
     class="relative flex min-h-screen flex-col bg-background font-sans text-foreground"
   >
-    <header class="absolute right-0 top-0 w-max p-2">
-      <ul>
+    <header class="right-0 top-0 p-4 md:absolute">
+      <ul class="flex justify-end gap-2 md:flex-col">
         {
-          LOCALES.filter((l) => l !== locale).map((l) => (
-            <li>
-              <Link href={getRelativeLocaleUrl(l, delocalizedPath)}>
-                {SWITCH_LOCALE_LABELS[l]}
-              </Link>
-            </li>
-          ))
+          LOCALES.toSorted((a, b) => a.localeCompare(b))
+            .filter((l) => l !== locale)
+            .map((l) => (
+              <li>
+                <Link
+                  href={getRelativeLocaleUrl(l, delocalizedPath)}
+                  aria-label={SWITCH_LOCALE_LABELS[l]}
+                  class="grid place-items-center border"
+                >
+                  <Flag name={l} />
+                </Link>
+              </li>
+            ))
         }
       </ul>
     </header>
-    <main class="container mx-auto max-w-xl flex-grow py-6">
+    <main class="container mx-auto max-w-xl flex-grow pb-6 md:pt-6">
       <slot />
     </main>
     <footer class="mt-8 p-2 text-center">

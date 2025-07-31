@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { TestName, type TestResults } from "@components/TestApp/types";
 import {
   Card,
@@ -12,8 +12,7 @@ import ResultsChart, {
 } from "@components/TestApp/TestResults/ResultsChart";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Button } from "@components/ui/button";
-import { LocaleContext } from "@/contexts/LocaleContext";
-import { i18n } from "@/i18n";
+import { useTranslations } from "@/contexts/TranslationsContext";
 
 function createScoringFunction(numPossibleAnswers: number) {
   return (numCorrect: number, numIncorrect: number) => {
@@ -63,9 +62,8 @@ const TestsResults = (props: {
   restartTests: () => void;
   goToTestSelection: () => void;
 }) => {
+  const t = useTranslations();
   const { currentResults, restartTests, goToTestSelection } = props;
-  const locale = useContext(LocaleContext);
-  const t = i18n(locale);
   const [previousResults, setPreviousResults] = useLocalStorage<TestResults[]>(
     "testResults",
     [],

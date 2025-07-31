@@ -1,3 +1,5 @@
+import type { ReasoningData } from "@components/TestApp/types";
+
 const names = [
   "Maria",
   "Anna",
@@ -15,7 +17,7 @@ const names = [
   "Daniela",
   "Rita",
   "Caterina",
-  "elena",
+  "Elena",
   "Patrizia",
   "Luca",
   "Antonietta",
@@ -661,10 +663,10 @@ const comparisons = [
       ["più irrazionale", "meno sensato"],
     ],
   },
-];
+] satisfies ReasoningData["comparisons"];
 
 export default {
   names,
   comparisons,
   question: "Chi è",
-};
+} satisfies ReasoningData;

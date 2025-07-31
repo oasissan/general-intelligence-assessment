@@ -8,13 +8,15 @@ import { Button } from "@components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import React, { StrictMode } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { i18n, type Locale } from "@/i18n";
-import { LocaleContext } from "@/contexts/LocaleContext";
+import { type LocaleBakedTranslations } from "@/i18n";
+import {
+  TranslationsProvider,
+  useTranslations,
+} from "@/contexts/TranslationsContext";
+import { TestDataProvider, type TestData } from "@/contexts/TestDataContext";
 
-const TestApp = (props: { locale: Locale }) => {
-  const { locale } = props;
-  const t = i18n(locale, "main-test-screen");
-
+const TestApp = () => {
+  const t = useTranslations("main-test-screen");
   const [phase, setPhase] = React.useState<
     | { name: "select" }
     | { name: "test" }
@@ -46,56 +48,69 @@ const TestApp = (props: { locale: Locale }) => {
   };
 
   return (
+    <section className="space-y-6">
+      {phase.name !== "select" && (
+        <Button
+          onClick={() => setPhase({ name: "select" })}
+          size="icon"
+          variant="outline"
+        >
+          <ArrowLeft />
+        </Button>
+      )}
+      {phase.name === "select" ? (
+        <div className="space-y-6">
+          <TestSelector
+            testOptions={testOptions}
+            setTestOptions={setTestOptions}
+            onStartTest={() => setPhase({ name: "test" })}
+          />
+          <Button
+            onClick={() =>
+              setPhase({
+                name: "results",
+                currentResults: {},
+              })
+            }
+            variant="outline"
+            className="mx-auto flex"
+          >
+            {t("see-results-history")}
+          </Button>
+        </div>
+      ) : phase.name === "test" ? (
+        <TestPerformer
+          tests={testOptions
+            .filter((option) => option.selected)
+            .map((option) => option.name)}
+          onCompleted={onCompleted}
+        />
+      ) : phase.name === "results" ? (
+        <TestsResults
+          currentResults={phase.currentResults}
+          restartTests={() => setPhase({ name: "test" })}
+          goToTestSelection={() => setPhase({ name: "select" })}
+        />
+      ) : null}
+    </section>
+  );
+};
+
+const TestAppRoot = (props: {
+  translations: LocaleBakedTranslations;
+  testData: TestData;
+}) => {
+  const { translations, testData } = props;
+
+  return (
     <StrictMode>
-      <LocaleContext.Provider value={locale}>
-        <section className="space-y-6">
-          {phase.name !== "select" && (
-            <Button
-              onClick={() => setPhase({ name: "select" })}
-              size="icon"
-              variant="outline"
-            >
-              <ArrowLeft />
-            </Button>
-          )}
-          {phase.name === "select" ? (
-            <div className="space-y-6">
-              <TestSelector
-                testOptions={testOptions}
-                setTestOptions={setTestOptions}
-                onStartTest={() => setPhase({ name: "test" })}
-              />
-              <Button
-                onClick={() =>
-                  setPhase({
-                    name: "results",
-                    currentResults: {},
-                  })
-                }
-                variant="outline"
-                className="mx-auto flex"
-              >
-                {t("see-results-history")}
-              </Button>
-            </div>
-          ) : phase.name === "test" ? (
-            <TestPerformer
-              tests={testOptions
-                .filter((option) => option.selected)
-                .map((option) => option.name)}
-              onCompleted={onCompleted}
-            />
-          ) : phase.name === "results" ? (
-            <TestsResults
-              currentResults={phase.currentResults}
-              restartTests={() => setPhase({ name: "test" })}
-              goToTestSelection={() => setPhase({ name: "select" })}
-            />
-          ) : null}
-        </section>
-      </LocaleContext.Provider>
+      <TranslationsProvider translations={translations}>
+        <TestDataProvider testData={testData}>
+          <TestApp />
+        </TestDataProvider>
+      </TranslationsProvider>
     </StrictMode>
   );
 };
 
-export default TestApp;
+export default TestAppRoot;

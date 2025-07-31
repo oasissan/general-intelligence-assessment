@@ -1,10 +1,15 @@
 ---
-import { bakeLocaleTranslations, getLocale } from "@/i18n";
+import { bakeLocaleTranslations, LOCALES } from "@/i18n";
 import { getTestData } from "@/testData";
 import TestApp from "@components/TestApp/TestApp";
 import Layout from "@layouts/Layout.astro";
+import type { GetStaticPaths } from "astro";
 
-const locale = getLocale(Astro.url);
+export const getStaticPaths = (() => {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}) satisfies GetStaticPaths;
+
+const { locale } = Astro.params;
 
 const translations = bakeLocaleTranslations(locale);
 const testData = getTestData(locale);
