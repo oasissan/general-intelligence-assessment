@@ -1,11 +1,15 @@
 ---
 import { bakeLocaleTranslations, getLocale } from "@/i18n";
+import { getTestData } from "@/testData";
 import TestApp from "@components/TestApp/TestApp";
 import Layout from "@layouts/Layout.astro";
 
-const translations = bakeLocaleTranslations(getLocale(Astro.url));
+const locale = getLocale(Astro.url);
+
+const translations = bakeLocaleTranslations(locale);
+const testData = getTestData(locale);
 ---
 
 <Layout subtitle="Test">
-  <TestApp client:load translations={translations} />
+  <TestApp client:load translations={translations} testData={testData} />
 </Layout>

@@ -19,3 +19,13 @@ export enum TestName {
   WORDS_MEANING = "Words Meaning",
   SPATIAL_VISUALIZATION = "Spatial Visualization",
 }
+
+export type WordsMeaningData = string[][];
+export type ReasoningData = {
+  names: string[];
+  comparisons: Array<{
+    s: [[string, string], [string, string]];
+    q: [[string, string], [string, string]];
+  }>;
+  question: string;
+};

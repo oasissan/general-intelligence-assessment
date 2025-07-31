@@ -1,4 +1,6 @@
-export const categories = [
+import type { WordsMeaningData } from "@components/TestApp/types";
+
+export default [
   ["Wrench", "Screwdriver", "Hammer", "Pliers", "Drill"], // All words are tools used for mechanical work (nouns)
   ["Adorable", "Charming", "Lovely", "Cute", "Endearing"], // All words describe pleasant or attractive qualities (adjectives)
   ["Cook", "Bake", "Grill", "Sauté", "Roast"], // All words describe methods of preparing food (verbs)
@@ -212,4 +214,4 @@ export const categories = [
   // ["Inventive", "Creative", "Innovative", "Original", "Imaginative"], // All words describe high levels of creativity and originality (adjectives)
   // ["Intricate", "Complex", "Detailed", "Elaborate", "Complicated"], // All words describe something with many parts or details (adjectives)
   // ["Collaborate", "Partner", "Join", "Work together", "Cooperate"], // All words relate to working together with others (verbs)
-];
+] satisfies WordsMeaningData;

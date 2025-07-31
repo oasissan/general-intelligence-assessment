@@ -13,6 +13,7 @@ import {
   TranslationsProvider,
   useTranslations,
 } from "@/contexts/TranslationsContext";
+import { TestDataProvider, type TestData } from "@/contexts/TestDataContext";
 
 const TestApp = () => {
   const t = useTranslations("main-test-screen");
@@ -95,13 +96,18 @@ const TestApp = () => {
   );
 };
 
-const TestAppRoot = (props: { translations: LocaleBakedTranslations }) => {
-  const { translations } = props;
+const TestAppRoot = (props: {
+  translations: LocaleBakedTranslations;
+  testData: TestData;
+}) => {
+  const { translations, testData } = props;
 
   return (
     <StrictMode>
       <TranslationsProvider translations={translations}>
-        <TestApp />
+        <TestDataProvider testData={testData}>
+          <TestApp />
+        </TestDataProvider>
       </TranslationsProvider>
     </StrictMode>
   );

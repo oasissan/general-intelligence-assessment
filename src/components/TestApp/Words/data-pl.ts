@@ -1,4 +1,6 @@
-export const categories = [
+import type { WordsMeaningData } from "@components/TestApp/types";
+
+export default [
   ["Klucz", "Śrubokręt", "Młot", "Szczypce", "Wiertło"],
   ["Uroczy", "Czarujący", "Słodki", "Cudowny"],
   ["Gotować", "Piec", "Grillować", "Smażyć", "Opiekać"],
@@ -50,4 +52,4 @@ export const categories = [
   ["Kryminalny", "Przestępca", "Podejrzany", "Sprawca"],
   ["Przeszkoda", "Wyzwanie", "Bariera", "Utrudnienie"],
   ["Muzeum", "Galeria", "Ekspozycja", "Zbiory"],
-];
+] satisfies WordsMeaningData;

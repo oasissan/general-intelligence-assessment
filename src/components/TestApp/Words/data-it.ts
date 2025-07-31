@@ -1,4 +1,6 @@
-export const categories = [
+import type { WordsMeaningData } from "@components/TestApp/types";
+
+export default [
   ["Chiave inglese", "Cacciavite", "Martello", "Pinze", "Trapano"],
   ["Adorabile", "Affascinante", "Incantevole", "Carino", "Amabile"],
   ["Cucinare", "Infornare", "Grigliare", "Saltare", "Arrostire"],
@@ -49,5 +51,5 @@ export const categories = [
   ["Analizzare", "Esaminare", "Scrutinare", "Indagare", "Valutare"],
   ["Criminale", "Delinquente", "Sospetto", "Colpevole", "Fuorilegge"],
   ["Ostacolo", "Barriera", "Impedimento", "Sfida", "Difficoltà"],
-  ["Museo", "Galleria", "Mostra", "Esposizione", "Collezione"]
-];
+  ["Museo", "Galleria", "Mostra", "Esposizione", "Collezione"],
+] satisfies WordsMeaningData;
