@@ -12,6 +12,8 @@ jobs:
       group: ci-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    env:
+      GITHUB_PAGES: "true"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
