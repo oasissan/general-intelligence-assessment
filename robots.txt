@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://oasissan.github.io/general-intelligence-assessmentsitemap-index.xml
