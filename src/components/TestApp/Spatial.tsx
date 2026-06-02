@@ -81,7 +81,7 @@ const Spatial = (props: TestProps) => {
 export default Spatial;
 
 const LETTERS = ["F", "G", "J", "L", "N", "P", "Q", "R", "S", "Z"];
-const NUM_COLUMNS = 2;
+const NUM_COLUMNS = 4;
 
 function generateQuestion() {
   const letter = pickRandom(LETTERS);
