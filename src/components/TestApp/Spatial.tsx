@@ -81,13 +81,13 @@ const Spatial = (props: TestProps) => {
 export default Spatial;
 
 const LETTERS = ["F", "G", "J", "L", "N", "P", "Q", "R", "S", "Z"];
-const NUM_COLUMNS = 4;
 
 function generateQuestion() {
   const letter = pickRandom(LETTERS);
-  const numOneMirrored = randomInt(0, NUM_COLUMNS);
+  const numColumns = randomInt(2, 4);
+  const numOneMirrored = randomInt(0, numColumns);
 
-  const columns = Array.from({ length: NUM_COLUMNS }, (_, i) => {
+  const columns = Array.from({ length: numColumns }, (_, i) => {
     const isOneMirrored = i < numOneMirrored;
     const isMirrored = randomBool();
 
@@ -104,6 +104,6 @@ function generateQuestion() {
   return {
     letter,
     columns: chooseRandom(columns, columns.length, true),
-    answer: NUM_COLUMNS - numOneMirrored,
+    answer: numColumns - numOneMirrored,
   };
 }
