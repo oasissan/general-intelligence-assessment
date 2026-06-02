@@ -1,5 +1,6 @@
 import type { TestData } from "@/contexts/TestDataContext";
 import type { Locale } from "@/i18n";
+import { assertNever } from "@/assertNever";
 import { TestName } from "@components/TestApp/types";
 import wordsEn from "@components/TestApp/Words/data-en";
 import wordsPl from "@components/TestApp/Words/data-pl";
