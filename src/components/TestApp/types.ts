@@ -9,6 +9,7 @@ export type TestResults = Partial<{
   [key in TestName]: {
     numCorrect: number;
     numIncorrect: number;
+    timeSpent?: number;
   };
 }>;
 

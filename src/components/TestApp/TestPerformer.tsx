@@ -31,10 +31,14 @@ const TestPerformer = (props: {
   const currentTestName = tests[currentTestIndex];
   const CurrentTest = TEST_MAP[currentTestName];
 
-  const onTestCompleted = (numCorrect: number, numIncorrect: number) => {
+  const onTestCompleted = (
+    numCorrect: number,
+    numIncorrect: number,
+    timeSpent: number,
+  ) => {
     const newResults = {
       ...testResults,
-      [currentTestName]: { numCorrect, numIncorrect },
+      [currentTestName]: { numCorrect, numIncorrect, timeSpent },
     };
 
     if (currentTestIndex === tests.length - 1) {

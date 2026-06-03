@@ -7,7 +7,11 @@ const MAX_TIME = 2 * 60;
 // const MAX_TIME = 2;
 
 const Test = (props: {
-  onCompleted: (numCorrect: number, numIncorrect: number) => void;
+  onCompleted: (
+    numCorrect: number,
+    numIncorrect: number,
+    timeSpent: number
+  ) => void;
   children: (props: TestProps) => React.ReactElement;
 }) => {
   const [testState, setTestState] = React.useState<"intro" | "in-progress">(
@@ -49,7 +53,7 @@ const Test = (props: {
       const interval = setInterval(() => {
         if (time >= MAX_TIME) {
           clearInterval(interval);
-          props.onCompleted(numCorrect, numIncorrect);
+          props.onCompleted(numCorrect, numIncorrect, time);
           return;
         }
         setTime((prev) => prev + 1);

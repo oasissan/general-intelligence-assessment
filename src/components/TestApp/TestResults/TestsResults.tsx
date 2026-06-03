@@ -68,6 +68,7 @@ type TestStats = {
   attempts: number;
   accuracy: number;
   lastTimestamp: number;
+  avgTimePerQuestion: number;
 };
 
 const TestsResults = (props: {
@@ -142,12 +143,30 @@ const TestsResults = (props: {
           .map((s) => s.timestamp),
       );
 
+      const avgTimePerQuestion = Math.round(
+        normalizedSessions
+          .slice(-MAX_TEST_HISTORY)
+          .filter((s) => s.results[testName])
+          .reduce((sum, s) => {
+            const result = s.results[testName];
+            return (
+              sum +
+              ((result?.timeSpent ?? 0) /
+                ((result?.numCorrect ?? 0) + (result?.numIncorrect ?? 0)) || 0)
+            );
+          }, 0) /
+          normalizedSessions
+            .slice(-MAX_TEST_HISTORY)
+            .filter((s) => s.results[testName]).length,
+      );
+
       statsMap.set(testName, {
         best,
         avg,
         attempts: scored.length,
         accuracy,
         lastTimestamp,
+        avgTimePerQuestion,
       });
     });
 
@@ -211,6 +230,12 @@ const TestsResults = (props: {
                         {t("results-history", "accuracy")}:{" "}
                       </span>
                       <span className="font-semibold">{testStats.accuracy}%</span>
+                    </span>
+                    <span className="rounded-sm bg-muted px-2 py-1">
+                      <span className="text-muted-foreground">
+                        {t("results-history", "avg-time")}:{" "}
+                      </span>
+                      <span className="font-semibold">{testStats.avgTimePerQuestion}s</span>
                     </span>
                     {testStats.lastTimestamp > 0 && (
                       <span className="rounded-sm bg-muted px-2 py-1">

@@ -314,6 +314,13 @@ const ui = {
       it: "Ultimo",
       fr: "Dernier",
     },
+    "avg-time": {
+      en: "Avg time/question",
+      pl: "Śr. czas/pytanie",
+      es: "Tiempo promedio/pregunta",
+      it: "Tempo medio/domanda",
+      fr: "Temps moyen/question",
+    },
   },
   charts: {
     correct: {
