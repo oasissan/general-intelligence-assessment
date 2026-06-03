@@ -1,5 +1,10 @@
 import React from "react";
-import { TestName, type TestResults } from "@components/TestApp/types";
+import {
+  TestName,
+  type TestResults,
+  type StoredSession,
+  normalizeSession,
+} from "@components/TestApp/types";
 import {
   Card,
   CardContent,
@@ -57,6 +62,14 @@ const MAX_TEST_HISTORY = 50;
 
 const TESTS = Object.values(TestName);
 
+type TestStats = {
+  best: number;
+  avg: number;
+  attempts: number;
+  accuracy: number;
+  lastTimestamp: number;
+};
+
 const TestsResults = (props: {
   currentResults: TestResults;
   restartTests: () => void;
@@ -64,23 +77,27 @@ const TestsResults = (props: {
 }) => {
   const t = useTranslations();
   const { currentResults, restartTests, goToTestSelection } = props;
-  const [previousResults, setPreviousResults] = useLocalStorage<TestResults[]>(
-    "testResults",
-    [],
+  const [previousSessions, setPreviousSessions] = useLocalStorage<
+    StoredSession[]
+  >("testResults", []);
+
+  const normalizedSessions = React.useMemo(
+    () => previousSessions.map(normalizeSession),
+    [previousSessions],
   );
 
   const results = React.useMemo(() => {
-    const lastMaxTests = previousResults.slice(-MAX_TEST_HISTORY);
+    const lastMaxSessions = normalizedSessions.slice(-MAX_TEST_HISTORY);
     const resultsMap = new Map<TestName, ScoredResult[]>();
 
     TESTS.forEach((testName) => {
-      const results: ScoredResult[] = [];
+      const scored: ScoredResult[] = [];
 
-      for (const testResults of lastMaxTests) {
-        const testResult = testResults[testName];
+      for (const session of lastMaxSessions) {
+        const testResult = session.results[testName];
 
         if (testResult) {
-          results.push({
+          scored.push({
             numCorrect: testResult.numCorrect,
             numIncorrect: testResult.numIncorrect,
             score: SCORING_FUNCTIONS[testName](
@@ -91,11 +108,51 @@ const TestsResults = (props: {
         }
       }
 
-      resultsMap.set(testName, results);
+      resultsMap.set(testName, scored);
     });
 
     return resultsMap;
-  }, [currentResults, previousResults]);
+  }, [currentResults, normalizedSessions]);
+
+  const stats = React.useMemo(() => {
+    const statsMap = new Map<TestName, TestStats>();
+
+    TESTS.forEach((testName) => {
+      const scored = results.get(testName) ?? [];
+      if (scored.length === 0) return;
+
+      const scores = scored.map((r) => r.score);
+      const best = Math.max(...scores);
+      const avg =
+        Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) /
+        10;
+      const accuracy = Math.round(
+        (scored.reduce(
+          (a, r) => a + r.numCorrect / (r.numCorrect + r.numIncorrect),
+          0,
+        ) /
+          scored.length) *
+          100,
+      );
+
+      const lastTimestamp = Math.max(
+        ...normalizedSessions
+          .slice(-MAX_TEST_HISTORY)
+          .filter((s) => s.results[testName])
+          .map((s) => s.timestamp),
+      );
+
+      statsMap.set(testName, {
+        best,
+        avg,
+        attempts: scored.length,
+        accuracy,
+        lastTimestamp,
+      });
+    });
+
+    return statsMap;
+  }, [results, normalizedSessions]);
 
   return (
     <>
@@ -103,6 +160,7 @@ const TestsResults = (props: {
         {TESTS.map((testName) => {
           const currentResult = currentResults[testName];
           const allResults = results.get(testName);
+          const testStats = stats.get(testName);
 
           return (
             <Card key={testName}>
@@ -123,6 +181,46 @@ const TestsResults = (props: {
                     {SCORING_FUNCTIONS[testName](
                       currentResult.numCorrect,
                       currentResult.numIncorrect,
+                    )}
+                  </div>
+                </CardContent>
+              )}
+              {testStats && (
+                <CardContent className="pt-0">
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    <span className="rounded-sm bg-muted px-2 py-1">
+                      <span className="text-muted-foreground">
+                        {t("results-history", "best")}:{" "}
+                      </span>
+                      <span className="font-semibold">{testStats.best}</span>
+                    </span>
+                    <span className="rounded-sm bg-muted px-2 py-1">
+                      <span className="text-muted-foreground">
+                        {t("results-history", "average")}:{" "}
+                      </span>
+                      <span className="font-semibold">{testStats.avg}</span>
+                    </span>
+                    <span className="rounded-sm bg-muted px-2 py-1">
+                      <span className="text-muted-foreground">
+                        {t("results-history", "attempts")}:{" "}
+                      </span>
+                      <span className="font-semibold">{testStats.attempts}</span>
+                    </span>
+                    <span className="rounded-sm bg-muted px-2 py-1">
+                      <span className="text-muted-foreground">
+                        {t("results-history", "accuracy")}:{" "}
+                      </span>
+                      <span className="font-semibold">{testStats.accuracy}%</span>
+                    </span>
+                    {testStats.lastTimestamp > 0 && (
+                      <span className="rounded-sm bg-muted px-2 py-1">
+                        <span className="text-muted-foreground">
+                          {t("results-history", "last-attempt")}:{" "}
+                        </span>
+                        <span className="font-semibold">
+                          {new Date(testStats.lastTimestamp).toLocaleDateString()}
+                        </span>
+                      </span>
                     )}
                   </div>
                 </CardContent>
@@ -150,10 +248,10 @@ const TestsResults = (props: {
         <Button
           variant="destructive"
           onClick={() => {
-            setPreviousResults([]);
+            setPreviousSessions([]);
             goToTestSelection();
           }}
-          disabled={previousResults.length === 0}
+          disabled={previousSessions.length === 0}
         >
           {t("results-history", "clear-history")}
         </Button>

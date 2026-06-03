@@ -3,7 +3,12 @@ import TestSelector, {
   type TestOption,
 } from "@components/TestApp/TestSelector/TestSelector";
 import TestsResults from "@components/TestApp/TestResults/TestsResults";
-import { TestName, type TestResults } from "@components/TestApp/types";
+import {
+  TestName,
+  type TestResults,
+  type StoredSession,
+  normalizeSession,
+} from "@components/TestApp/types";
 import { Button } from "@components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import React, { StrictMode } from "react";
@@ -32,15 +37,19 @@ const TestApp = () => {
     { name: TestName.WORDS_MEANING, selected: true },
     { name: TestName.SPATIAL_VISUALIZATION, selected: true },
   ]);
-  const [previousResults, setPreviousResults] = useLocalStorage<TestResults[]>(
-    "testResults",
-    [],
-  );
+  const [previousSessions, setPreviousSessions] = useLocalStorage<
+    StoredSession[]
+  >("testResults", []);
 
   const onCompleted = (testResults: TestResults) => {
-    const newResults = [...previousResults, testResults];
-
-    setPreviousResults(newResults);
+    const newSession: StoredSession = {
+      timestamp: Date.now(),
+      results: testResults,
+    };
+    setPreviousSessions([
+      ...previousSessions.map(normalizeSession),
+      newSession,
+    ]);
     setPhase({
       name: "results",
       currentResults: testResults,

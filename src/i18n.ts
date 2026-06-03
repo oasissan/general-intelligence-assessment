@@ -279,6 +279,41 @@ const ui = {
       it: "Cancella la cronologia dei risultati",
       fr: "Effacer l'historique des résultats",
     },
+    best: {
+      en: "Best",
+      pl: "Najlepszy",
+      es: "Mejor",
+      it: "Migliore",
+      fr: "Meilleur",
+    },
+    average: {
+      en: "Average",
+      pl: "Średnia",
+      es: "Promedio",
+      it: "Media",
+      fr: "Moyenne",
+    },
+    attempts: {
+      en: "Attempts",
+      pl: "Próby",
+      es: "Intentos",
+      it: "Tentativi",
+      fr: "Tentatives",
+    },
+    accuracy: {
+      en: "Accuracy",
+      pl: "Celność",
+      es: "Precisión",
+      it: "Precisione",
+      fr: "Précision",
+    },
+    "last-attempt": {
+      en: "Last",
+      pl: "Ostatni",
+      es: "Último",
+      it: "Ultimo",
+      fr: "Dernier",
+    },
   },
   charts: {
     correct: {

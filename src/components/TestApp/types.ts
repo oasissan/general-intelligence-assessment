@@ -12,6 +12,17 @@ export type TestResults = Partial<{
   };
 }>;
 
+export type StoredSession = {
+  timestamp: number;
+  results: TestResults;
+};
+
+export function normalizeSession(entry: unknown): StoredSession {
+  if (entry && typeof entry === "object" && "results" in entry)
+    return entry as StoredSession;
+  return { timestamp: 0, results: entry as TestResults };
+}
+
 export enum TestName {
   REASONING = "Reasoning",
   PERCEPTUAL_SPEED = "Perceptual Speed",
