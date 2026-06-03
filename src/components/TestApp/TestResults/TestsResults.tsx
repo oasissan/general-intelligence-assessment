@@ -143,22 +143,20 @@ const TestsResults = (props: {
           .map((s) => s.timestamp),
       );
 
-      const avgTimePerQuestion = Math.round(
-        normalizedSessions
-          .slice(-MAX_TEST_HISTORY)
-          .filter((s) => s.results[testName])
-          .reduce((sum, s) => {
-            const result = s.results[testName];
-            return (
-              sum +
-              ((result?.timeSpent ?? 0) /
-                ((result?.numCorrect ?? 0) + (result?.numIncorrect ?? 0)) || 0)
+      const sessionsWithTime = normalizedSessions
+        .slice(-MAX_TEST_HISTORY)
+        .filter((s) => (s.results[testName]?.timeSpent ?? 0) > 0);
+
+      const avgTimePerQuestion =
+        sessionsWithTime.length === 0
+          ? 0
+          : Math.round(
+              sessionsWithTime.reduce((sum, s) => {
+                const result = s.results[testName]!;
+                const total = result.numCorrect + result.numIncorrect;
+                return sum + (total > 0 ? result.timeSpent! / total : 0);
+              }, 0) / sessionsWithTime.length,
             );
-          }, 0) /
-          normalizedSessions
-            .slice(-MAX_TEST_HISTORY)
-            .filter((s) => s.results[testName]).length,
-      );
 
       statsMap.set(testName, {
         best,
@@ -231,12 +229,14 @@ const TestsResults = (props: {
                       </span>
                       <span className="font-semibold">{testStats.accuracy}%</span>
                     </span>
-                    <span className="rounded-sm bg-muted px-2 py-1">
-                      <span className="text-muted-foreground">
-                        {t("results-history", "avg-time")}:{" "}
+                    {testStats.avgTimePerQuestion > 0 && (
+                      <span className="rounded-sm bg-muted px-2 py-1">
+                        <span className="text-muted-foreground">
+                          {t("results-history", "avg-time")}:{" "}
+                        </span>
+                        <span className="font-semibold">{testStats.avgTimePerQuestion}s</span>
                       </span>
-                      <span className="font-semibold">{testStats.avgTimePerQuestion}s</span>
-                    </span>
+                    )}
                     {testStats.lastTimestamp > 0 && (
                       <span className="rounded-sm bg-muted px-2 py-1">
                         <span className="text-muted-foreground">
