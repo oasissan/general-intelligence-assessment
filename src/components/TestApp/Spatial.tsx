@@ -80,7 +80,7 @@ const Spatial = (props: TestProps) => {
 
 export default Spatial;
 
-const LETTERS = ["F", "G", "J", "L", "N", "P", "Q", "R", "S", "Z"];
+const LETTERS = ["R", "P", "N", "G", "F"];
 
 function generateQuestion() {
   const letter = pickRandom(LETTERS);
