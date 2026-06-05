@@ -256,6 +256,13 @@ const ui = {
       it: "Le lettere ruotate sono considerate uguali, ma quelle specchiate no.",
       fr: "Les lettres tournées sont considérées comme identiques, mais pas les lettres miroir.",
     },
+    "select-characters": {
+      en: "Select the characters to be shown:",
+      pl: "Wybierz litery, które chcesz użyć:",
+      es: "Selecciona los caracteres a mostrar:",
+      it: "Seleziona i caratteri da mostrare:",
+      fr: "Sélectionnez les caractères à afficher :",
+    },
   },
   "results-history": {
     "no-results": {

@@ -12,12 +12,21 @@ import {
   CardFooter,
   CardDescription,
 } from "@components/ui/card";
+import { Checkbox } from "@components/ui/checkbox";
+import { Label } from "@components/ui/label";
 import React from "react";
 
 const Spatial = (props: TestProps) => {
   const { onCorrectAnswer, onIncorrectAnswer, testState } = props;
   const t = useTranslations("spatial-visualization");
-  const [question, setQuestion] = React.useState(generateQuestion);
+  const [selectedLetters, setSelectedLetters] = React.useState<string[]>(LETTERS);
+  const [question, setQuestion] = React.useState(() => generateQuestion(LETTERS));
+
+  React.useEffect(() => {
+    if (testState === "intro" && selectedLetters.length > 0) {
+      setQuestion(generateQuestion(selectedLetters));
+    }
+  }, [selectedLetters, testState]);
 
   const onAnswer = (answer: number) => {
     if (answer === question.answer) {
@@ -27,16 +36,44 @@ const Spatial = (props: TestProps) => {
       onIncorrectAnswer();
     }
 
-    setQuestion(generateQuestion());
+    setQuestion(generateQuestion(selectedLetters));
   };
 
   if (testState === "intro")
     return (
       <TestIntro
         testName={TestName.SPATIAL_VISUALIZATION}
-        onStartTest={props.onStartTest}
+        onStartTest={() => {
+          if (selectedLetters.length === 0) return;
+          props.onStartTest();
+        }}
       >
-        <p className="text-justify">{t("intro")}</p>
+        <div className="flex flex-col gap-6">
+          <p className="text-justify">{t("intro")}</p>
+          <div>
+            <Label className="text-base font-semibold">{t("select-characters")}</Label>
+            <div className="mt-4 flex flex-wrap gap-4">
+              {LETTERS.map((letter) => (
+                <div key={letter} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`letter-${letter}`}
+                    checked={selectedLetters.includes(letter)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedLetters((prev) => [...prev, letter]);
+                      } else {
+                        setSelectedLetters((prev) =>
+                          prev.length > 1 ? prev.filter((l) => l !== letter) : prev
+                        );
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`letter-${letter}`} className="text-lg cursor-pointer">{letter}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </TestIntro>
     );
 
@@ -82,8 +119,8 @@ export default Spatial;
 
 const LETTERS = ["R", "P", "G", "F"];
 
-function generateQuestion() {
-  const letter = pickRandom(LETTERS);
+function generateQuestion(availableLetters: string[] = LETTERS) {
+  const letter = pickRandom(availableLetters);
   const numColumns = randomInt(2, 4);
   const numOneMirrored = randomInt(0, numColumns);
 
