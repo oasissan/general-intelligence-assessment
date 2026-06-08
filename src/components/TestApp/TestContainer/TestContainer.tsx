@@ -12,6 +12,7 @@ const Test = (props: {
     numIncorrect: number,
     timeSpent: number
   ) => void;
+  showFeedback: boolean;
   children: (props: TestProps) => React.ReactElement;
 }) => {
   const [testState, setTestState] = React.useState<"intro" | "in-progress">(
@@ -25,23 +26,27 @@ const Test = (props: {
   const onCorrectAnswer = () => {
     setNumCorrect((prev) => prev + 1);
 
-    testContainerRef.current &&
-      testContainerRef.current.setAttribute("data-answer", "correct");
-    setTimeout(() => {
+    if (props.showFeedback) {
       testContainerRef.current &&
-        testContainerRef.current.removeAttribute("data-answer");
-    }, 300);
+        testContainerRef.current.setAttribute("data-answer", "correct");
+      setTimeout(() => {
+        testContainerRef.current &&
+          testContainerRef.current.removeAttribute("data-answer");
+      }, 300);
+    }
   };
 
   const onIncorrectAnswer = () => {
     setNumIncorrect((prev) => prev + 1);
 
-    testContainerRef.current &&
-      testContainerRef.current.setAttribute("data-answer", "incorrect");
-    setTimeout(() => {
+    if (props.showFeedback) {
       testContainerRef.current &&
-        testContainerRef.current.removeAttribute("data-answer");
-    }, 300);
+        testContainerRef.current.setAttribute("data-answer", "incorrect");
+      setTimeout(() => {
+        testContainerRef.current &&
+          testContainerRef.current.removeAttribute("data-answer");
+      }, 300);
+    }
   };
 
   const onStartTest = () => {

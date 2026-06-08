@@ -37,6 +37,10 @@ const TestApp = () => {
     { name: TestName.WORDS_MEANING, selected: true },
     { name: TestName.SPATIAL_VISUALIZATION, selected: true },
   ]);
+  const [showFeedback, setShowFeedback] = useLocalStorage<boolean>(
+    "showFeedback",
+    true,
+  );
   const [previousSessions, setPreviousSessions] = useLocalStorage<
     StoredSession[]
   >("testResults", []);
@@ -73,6 +77,8 @@ const TestApp = () => {
             testOptions={testOptions}
             setTestOptions={setTestOptions}
             onStartTest={() => setPhase({ name: "test" })}
+            showFeedback={showFeedback}
+            setShowFeedback={setShowFeedback}
           />
           <Button
             onClick={() =>
@@ -93,6 +99,7 @@ const TestApp = () => {
             .filter((option) => option.selected)
             .map((option) => option.name)}
           onCompleted={onCompleted}
+          showFeedback={showFeedback}
         />
       ) : phase.name === "results" ? (
         <TestsResults

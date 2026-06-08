@@ -23,8 +23,9 @@ const TEST_MAP = {
 const TestPerformer = (props: {
   tests: TestName[];
   onCompleted: (testResults: TestResults) => void;
+  showFeedback: boolean;
 }) => {
-  const { tests, onCompleted } = props;
+  const { tests, onCompleted, showFeedback } = props;
   const [currentTestIndex, setCurrentTestIndex] = React.useState(0);
   const [testResults, setTestResults] = React.useState<TestResults>({});
 
@@ -51,7 +52,7 @@ const TestPerformer = (props: {
   };
 
   return (
-    <Test onCompleted={onTestCompleted} key={currentTestName}>
+    <Test onCompleted={onTestCompleted} key={currentTestName} showFeedback={showFeedback}>
       {(props) => <CurrentTest {...props} />}
     </Test>
   );

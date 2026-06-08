@@ -116,6 +116,13 @@ const ui = {
       it: "Seleziona tutti",
       fr: "Tout sélectionner",
     },
+    "show-feedback": {
+      en: "Show answer feedback (colors)",
+      pl: "Pokaż informację zwrotną o odpowiedzi (kolory)",
+      es: "Mostrar retroalimentación de respuestas (colores)",
+      it: "Mostra feedback delle risposte (colori)",
+      fr: "Afficher le retour sur les réponses (couleurs)",
+    },
     start: {
       en: "Start the tests",
       pl: "Rozpocznij testy",

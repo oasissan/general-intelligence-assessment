@@ -23,11 +23,13 @@ export type TestOption = {
 const TestSelector = (props: {
   testOptions: TestOption[];
   setTestOptions: (options: TestOption[]) => void;
+  showFeedback: boolean;
+  setShowFeedback: (show: boolean) => void;
   onStartTest: () => void;
 }) => {
   const t = useTranslations("test-selector");
 
-  const { testOptions, setTestOptions, onStartTest } = props;
+  const { testOptions, setTestOptions, showFeedback, setShowFeedback, onStartTest } = props;
 
   const [lastMovedUp, setLastMovedUp] = React.useState<string | null>(null);
   const [lastMovedDown, setLastMovedDown] = React.useState<string | null>(null);
@@ -115,14 +117,22 @@ const TestSelector = (props: {
           />
         ))}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Label className="flex w-max cursor-pointer items-center gap-4">
-          <Checkbox checked={allSelected} onCheckedChange={onSelectAllChange} />
-          <div>{t("select-all")}</div>
-        </Label>
-        <Button disabled={allSelected === false} onClick={onStartTest}>
-          {t("start")}
-        </Button>
+      <CardFooter className="flex flex-col gap-4">
+        <div className="flex w-full justify-between items-center">
+          <Label className="flex w-max cursor-pointer items-center gap-4">
+            <Checkbox checked={allSelected} onCheckedChange={onSelectAllChange} />
+            <div>{t("select-all")}</div>
+          </Label>
+          <Button disabled={allSelected === false} onClick={onStartTest}>
+            {t("start")}
+          </Button>
+        </div>
+        <div className="flex w-full justify-between items-center border-t pt-4">
+          <Label className="flex w-max cursor-pointer items-center gap-4">
+            <Checkbox checked={showFeedback} onCheckedChange={setShowFeedback} />
+            <div>{t("show-feedback")}</div>
+          </Label>
+        </div>
       </CardFooter>
     </Card>
   );
