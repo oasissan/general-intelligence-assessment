@@ -1,6 +1,6 @@
 import { TestName } from "@components/TestApp/types";
 
-export const LOCALES = ["en", "pl", "es", "it", "fr"] as const;
+export const LOCALES = ["en", "pl", "es", "it", "fr", "ar"] as const;
 export const DEFAULT_LOCALE = "en" as const;
 export type Locale = (typeof LOCALES)[number];
 
@@ -14,7 +14,14 @@ export const SWITCH_LOCALE_LABELS = {
   es: "Cambiar a español",
   it: "Passa all'italiano",
   fr: "Passer en français",
+  ar: "التبديل إلى العربية",
 } as const satisfies LocaleValues;
+
+export const RTL_LOCALES = new Set<Locale>(["ar"]);
+
+export function isRtl(locale: Locale): boolean {
+  return RTL_LOCALES.has(locale);
+}
 
 export function getLocale(url: URL): Locale {
   const path = url.pathname;
@@ -48,6 +55,7 @@ const ui = {
       es: "Prueba General de Inteligencia",
       it: "Valutazione dell'intelligenza generale",
       fr: "Évaluation de l'intelligence générale",
+      ar: "تقييم الذكاء العام",
     },
     "intro-1": {
       en: "As a part of a job application process, I was asked to complete a ",
@@ -55,6 +63,7 @@ const ui = {
       es: "Como parte de un proceso de selección, se me pedía completar el ",
       it: "Come parte di un processo di selezione, mi è stato chiesto di completare un ",
       fr: "Dans le cadre d'un processus de recrutement, on m'a demandé de passer un ",
+      ar: "كجزء من عملية التقدّم لوظيفة، طُلب مني إكمال ",
     },
     "intro-2": {
       en: "Thomas GIA test",
@@ -62,6 +71,7 @@ const ui = {
       es: "test de Thomas GIA",
       it: "test Thomas GIA",
       fr: "test Thomas GIA",
+      ar: "اختبار Thomas GIA",
     },
     "intro-3": {
       en: ". As I haven't found any proper practice materials, I decided to create a simple web app to test myself before the real thing.",
@@ -69,6 +79,7 @@ const ui = {
       es: ". Dado que no encontré materiales adequados para practicar, decidí crear una aplicación web simple para entrenarme antes del test real.",
       it: ". Poiché non ho trovato materiali adatti per esercitarmi, ho deciso di creare una semplice applicazione web per allenarmi prima del test vero e proprio.",
       fr: ". Comme je n'ai pas trouvé de matériel d'entraînement adapté, j'ai décidé de créer une application web simple pour m'entraîner avant le vrai test.",
+      ar: ". وبما أنني لم أجد أي مواد تدريبية مناسبة، قررت إنشاء تطبيق ويب بسيط لاختبار نفسي قبل الاختبار الحقيقي.",
     },
     "disclaimer-1": {
       en: "I am not affiliated with Thomas International in any way. This is a personal project. I do not have access to the real test questions. I do not provide any guarantees that the questions in this app are similar to the real test.",
@@ -76,6 +87,7 @@ const ui = {
       es: "No estoy relacionado de ninguna manera con Thomas International. Éste es un proyecto personal. No tengo acceso a las preguntas del test real. No puedo dar ninguna garantía de que las preguntas en este test se parezcan a las del test real.",
       it: "Non sono in alcun modo affiliato con Thomas International. Questo è un progetto personale. Non ho accesso alle domande reali del test. Non garantisco che le domande presenti in questa app siano simili a quelle del test ufficiale.",
       fr: "Je ne suis en aucun cas affilié à Thomas International. Il s'agit d'un projet personnel. Je n'ai pas accès aux questions du test réel. Je ne garantis pas que les questions de cette application ressemblent à celles du test officiel.",
+      ar: "لست مرتبطًا بأي شكل من الأشكال بشركة Thomas International. هذا مشروع شخصي. لا أملك صلاحية الوصول إلى أسئلة الاختبار الحقيقية. ولا أقدّم أي ضمان بأن الأسئلة في هذا التطبيق مشابهة للاختبار الحقيقي.",
     },
     "disclaimer-2": {
       en: "The app is still in development. Any parts of the app may change at any time. You may loose your results history.",
@@ -83,6 +95,7 @@ const ui = {
       es: "Esta aplicación está en desarrollo. Cualquier parte puede cambiar en cualquier momento. Se puede perder el histórico de resultados.",
       it: "L'app è ancora in fase di sviluppo. Qualsiasi parte può cambiare in qualsiasi momento. Potresti perdere la cronologia dei risultati.",
       fr: "L'application est encore en développement. N'importe quelle partie peut changer à tout moment. Vous pouvez perdre l'historique de vos résultats.",
+      ar: "لا يزال التطبيق قيد التطوير. وقد يتغيّر أي جزء منه في أي وقت. وقد تفقد سجل نتائجك.",
     },
     cta: {
       en: "Let's go",
@@ -90,6 +103,7 @@ const ui = {
       es: "Vamos allá",
       it: "Iniziamo",
       fr: "C'est parti",
+      ar: "لنبدأ",
     },
   },
   "main-test-screen": {
@@ -99,6 +113,7 @@ const ui = {
       es: "Ver histórico de resultados",
       it: "Vedi cronologia dei risultati",
       fr: "Voir l'historique des résultats",
+      ar: "عرض سجل النتائج",
     },
   },
   "test-selector": {
@@ -108,6 +123,7 @@ const ui = {
       es: "Selecciona que pruebas quieres hacer",
       it: "Seleziona i test che vuoi eseguire",
       fr: "Sélectionnez les tests que vous souhaitez passer",
+      ar: "اختر الاختبارات التي تريد إجراءها",
     },
     "select-all": {
       en: "Select all",
@@ -115,6 +131,7 @@ const ui = {
       es: "Seleccionar todas",
       it: "Seleziona tutti",
       fr: "Tout sélectionner",
+      ar: "تحديد الكل",
     },
     "show-feedback": {
       en: "Show answer feedback (colors)",
@@ -122,6 +139,7 @@ const ui = {
       es: "Mostrar retroalimentación de respuestas (colores)",
       it: "Mostra feedback delle risposte (colori)",
       fr: "Afficher le retour sur les réponses (couleurs)",
+      ar: "إظهار تقييم الإجابة (بالألوان)",
     },
     start: {
       en: "Start the tests",
@@ -129,6 +147,7 @@ const ui = {
       es: "Empezar la prueba",
       it: "Inizia i test",
       fr: "Commencer les tests",
+      ar: "ابدأ الاختبارات",
     },
   },
   "test-names": {
@@ -138,6 +157,7 @@ const ui = {
       es: "Razonamiento",
       it: "Ragionamento",
       fr: "Raisonnement",
+      ar: "الاستدلال المنطقي",
     },
     [TestName.PERCEPTUAL_SPEED]: {
       en: "Perceptual speed",
@@ -145,6 +165,7 @@ const ui = {
       es: "Velocidad perceptiva",
       it: "Velocità percettiva",
       fr: "Vitesse perceptuelle",
+      ar: "السرعة الإدراكية",
     },
     [TestName.NUMBERS_SPEED_AND_ACCURACY]: {
       en: "Numbers speed and accuracy",
@@ -152,6 +173,7 @@ const ui = {
       es: "Velocidad y precisión numérica",
       it: "Velocità e accuratezza numerica",
       fr: "Vitesse et précision numérique",
+      ar: "السرعة والدقة العددية",
     },
     [TestName.WORDS_MEANING]: {
       en: "Words meaning",
@@ -159,6 +181,7 @@ const ui = {
       es: "Significado de palabras",
       it: "Significato delle parole",
       fr: "Signification des mots",
+      ar: "معاني الكلمات",
     },
     [TestName.SPATIAL_VISUALIZATION]: {
       en: "Spatial visualization",
@@ -166,6 +189,7 @@ const ui = {
       es: "Visualización espacial",
       it: "Visualizzazione spaziale",
       fr: "Visualisation spatiale",
+      ar: "التصوّر المكاني",
     },
   } satisfies { [key in TestName]: { [locale in Locale]: string } },
   "test-intro": {
@@ -175,6 +199,7 @@ const ui = {
       es: "Estoy a punto",
       it: "Sono pronto",
       fr: "Je suis prêt",
+      ar: "أنا مستعد",
     },
   },
   reasoning: {
@@ -184,6 +209,7 @@ const ui = {
       es: "En esta prueba, se va a presentar una sentencia y una pregunta. La sentencia compara dos nombres, y la pregunta pide identificar que nombre cumple la comparación.",
       it: "In questo test ti verrà presentata un'affermazione e una domanda. L'affermazione confronterà due nomi, e la domanda ti chiederà di identificare quale nome corrisponde al confronto.",
       fr: "Dans ce test, une affirmation et une question vous seront présentées. L'affirmation compare deux noms, et la question vous demande d'identifier lequel correspond à la comparaison.",
+      ar: "في هذا الاختبار، ستُعرض عليك عبارة وسؤال. تقارن العبارة بين اسمين، ويطلب منك السؤال تحديد الاسم الذي ينطبق عليه الوصف.",
     },
     cta: {
       en: "Show the question",
@@ -191,6 +217,7 @@ const ui = {
       es: "Muestra la pregunta",
       it: "Mostra la domanda",
       fr: "Afficher la question",
+      ar: "أظهر السؤال",
     },
   },
   perceptual: {
@@ -200,6 +227,7 @@ const ui = {
       es: "En esta prueba, se presentan cuatro columnas de letras. Debes identificar cuántas columnas tienen la misma letra.",
       it: "In questo test ti verranno presentate quattro colonne di lettere. Il tuo compito è identificare quante colonne hanno la stessa lettera.",
       fr: "Dans ce test, vous verrez quatre colonnes de lettres. Votre tâche est d'identifier combien de colonnes contiennent la même lettre.",
+      ar: "في هذا الاختبار، ستُعرض عليك أربعة أعمدة من الحروف. مهمتك هي تحديد عدد الأعمدة التي تحتوي على الحرف نفسه.",
     },
     question: {
       en: "How many columns have the same letter?",
@@ -207,6 +235,7 @@ const ui = {
       es: "Cuántas columnas tienen la misma letra?",
       it: "Quante colonne hanno la stessa lettera?",
       fr: "Combien de colonnes ont la même lettre ?",
+      ar: "كم عددًا من الأعمدة يحتوي على الحرف نفسه؟",
     },
   },
   numbers: {
@@ -216,6 +245,7 @@ const ui = {
       es: "En esta prueba se presentan tres números. Debes identificar que número está más alejado de el numero que define la mediana.",
       it: "In questo test ti verranno presentati tre numeri. Il tuo compito è identificare quale numero è il più lontano dalla mediana.",
       fr: "Dans ce test, trois nombres vous seront présentés. Votre tâche est d'identifier lequel est le plus éloigné de la médiane.",
+      ar: "في هذا الاختبار، ستُعرض عليك ثلاثة أرقام. مهمتك هي تحديد الرقم الأبعد عن الوسيط.",
     },
     question: {
       en: "Which number is furthest from the median?",
@@ -223,6 +253,7 @@ const ui = {
       es: "Qué número está más alejado de la mediana?",
       it: "Quale numero è più distante dalla mediana?",
       fr: "Quel nombre est le plus éloigné de la médiane ?",
+      ar: "أي رقم هو الأبعد عن الوسيط؟",
     },
   },
   "words-meaning": {
@@ -232,6 +263,7 @@ const ui = {
       es: "En esta prueba se presentan tres palabras. Debes identificar qué palabra no es la adecuada.",
       it: "In questo test ti verranno presentate tre parole. Il tuo compito è identificare quale parola non appartiene.",
       fr: "Dans ce test, trois mots vous seront présentés. Votre tâche est d'identifier lequel ne correspond pas aux autres.",
+      ar: "في هذا الاختبار، ستُعرض عليك ثلاث كلمات. مهمتك هي تحديد الكلمة التي لا تنتمي إلى المجموعة.",
     },
     question: {
       en: "Which word doesn't belong?",
@@ -239,6 +271,7 @@ const ui = {
       es: "Qué palabra no es adecuada?",
       it: "Quale parola non appartiene?",
       fr: "Quel mot ne correspond pas ?",
+      ar: "أي كلمة لا تنتمي إلى المجموعة؟",
     },
   },
   "spatial-visualization": {
@@ -248,6 +281,7 @@ const ui = {
       es: "En esta prueba se presentan dos cuadrados con dos letras. Debes identificar cuántos cuadrados tienen la misma letra. Las letras se consideran iguales si sólo difieren en la rotación pero no si una es el reflejo de la otra.",
       it: "In questo test ti verrà presentata una griglia di lettere. Il tuo compito è identificare quante caselle contengono la stessa lettera. Le lettere ruotate sono considerate uguali, mentre quelle specchiate no.",
       fr: "Dans ce test, une grille de lettres vous sera présentée. Votre tâche est d'identifier combien de cases contiennent la même lettre. Les lettres tournées sont considérées comme identiques, mais pas les lettres miroir.",
+      ar: "في هذا الاختبار، ستُعرض عليك شبكة من الحروف. مهمتك هي تحديد عدد المربعات التي تحتوي على الحرف نفسه. تُعتبر الحروف المُدوّرة متماثلة، أما الحروف المعكوسة (المرآة) فلا.",
     },
     question: {
       en: "How many boxes have the same letter?",
@@ -255,6 +289,7 @@ const ui = {
       es: "Cuántos cuadrados tienen la misma letra?",
       it: "Quante caselle contengono la stessa lettera?",
       fr: "Combien de cases ont la même lettre ?",
+      ar: "كم مربعًا يحتوي على الحرف نفسه؟",
     },
     description: {
       en: "Rotated letters are considered the same, while mirrored letters are not.",
@@ -262,6 +297,7 @@ const ui = {
       es: "Las letras rotadas se consideran iguales, pero las reflejadas no.",
       it: "Le lettere ruotate sono considerate uguali, ma quelle specchiate no.",
       fr: "Les lettres tournées sont considérées comme identiques, mais pas les lettres miroir.",
+      ar: "تُعتبر الحروف المُدوّرة متماثلة، أما الحروف المعكوسة (المرآة) فلا.",
     },
     "select-characters": {
       en: "Select the characters to be shown:",
@@ -269,6 +305,7 @@ const ui = {
       es: "Selecciona los caracteres a mostrar:",
       it: "Seleziona i caratteri da mostrare:",
       fr: "Sélectionnez les caractères à afficher :",
+      ar: "اختر الحروف التي تريد عرضها:",
     },
   },
   "results-history": {
@@ -278,6 +315,7 @@ const ui = {
       es: "No hay resultados todavía.",
       it: "Nessun risultato ancora",
       fr: "Aucun résultat pour l'instant",
+      ar: "لا توجد نتائج بعد",
     },
     retake: {
       en: "Retake the tests",
@@ -285,6 +323,7 @@ const ui = {
       es: "Repetir la prueba",
       it: "Ripeti i test",
       fr: "Repasser les tests",
+      ar: "إعادة الاختبارات",
     },
     "clear-history": {
       en: "Clear results history",
@@ -292,6 +331,7 @@ const ui = {
       es: "Eliminar el histórico",
       it: "Cancella la cronologia dei risultati",
       fr: "Effacer l'historique des résultats",
+      ar: "مسح سجل النتائج",
     },
     best: {
       en: "Best",
@@ -299,6 +339,7 @@ const ui = {
       es: "Mejor",
       it: "Migliore",
       fr: "Meilleur",
+      ar: "الأفضل",
     },
     average: {
       en: "Average",
@@ -306,6 +347,7 @@ const ui = {
       es: "Promedio",
       it: "Media",
       fr: "Moyenne",
+      ar: "المتوسط",
     },
     attempts: {
       en: "Attempts",
@@ -313,6 +355,7 @@ const ui = {
       es: "Intentos",
       it: "Tentativi",
       fr: "Tentatives",
+      ar: "المحاولات",
     },
     accuracy: {
       en: "Accuracy",
@@ -320,6 +363,7 @@ const ui = {
       es: "Precisión",
       it: "Precisione",
       fr: "Précision",
+      ar: "الدقة",
     },
     "last-attempt": {
       en: "Last",
@@ -327,6 +371,7 @@ const ui = {
       es: "Último",
       it: "Ultimo",
       fr: "Dernier",
+      ar: "الأخيرة",
     },
     "avg-time": {
       en: "Avg time/question",
@@ -334,6 +379,7 @@ const ui = {
       es: "Tiempo promedio/pregunta",
       it: "Tempo medio/domanda",
       fr: "Temps moyen/question",
+      ar: "متوسط الزمن/سؤال",
     },
   },
   charts: {
@@ -343,6 +389,7 @@ const ui = {
       es: "Correcto",
       it: "Corretto",
       fr: "Correct",
+      ar: "صحيحة",
     },
     incorrect: {
       en: "Incorrect",
@@ -350,6 +397,7 @@ const ui = {
       es: "Erróneo",
       it: "Errato",
       fr: "Incorrect",
+      ar: "خاطئة",
     },
     score: {
       en: "Score",
@@ -357,6 +405,7 @@ const ui = {
       es: "Puntuación",
       it: "Punteggio",
       fr: "Score",
+      ar: "النتيجة",
     },
   },
   layout: {
@@ -366,6 +415,7 @@ const ui = {
       es: "Hecho por",
       it: "Creato da",
       fr: "Réalisé par",
+      ar: "صُنع بواسطة",
     },
   },
 } as const satisfies {

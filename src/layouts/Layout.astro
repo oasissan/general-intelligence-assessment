@@ -2,6 +2,7 @@
 import {
   delocalizePath,
   getLocale,
+  isRtl,
   LOCALES,
   SWITCH_LOCALE_LABELS,
   i18n,
@@ -30,7 +31,7 @@ const t = i18n(locale, "layout");
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} dir={isRtl(locale) ? "rtl" : "ltr"}>
   <head>
     <SEO title={title} description={description} charset="UTF-8" />
     {
@@ -55,7 +56,7 @@ const t = i18n(locale, "layout");
   <body
     class="relative flex min-h-screen flex-col bg-background font-sans text-foreground"
   >
-    <header class="right-0 top-0 p-4 md:absolute">
+    <header class="end-0 top-0 p-4 md:absolute">
       <ul class="flex justify-end gap-2 md:flex-col">
         {
           LOCALES.toSorted((a, b) => a.localeCompare(b))

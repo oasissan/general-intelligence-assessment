@@ -83,7 +83,7 @@ const Spatial = (props: TestProps) => {
         <CardTitle>{t("question")}</CardTitle>
         <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
-      <CardContent className="flex justify-center gap-6 text-2xl">
+      <CardContent dir="ltr" className="flex justify-center gap-6 text-2xl">
         {question.columns.map((letters, i) => (
           <div key={i}>
             <Card className="rounded-sm p-0">
@@ -104,7 +104,7 @@ const Spatial = (props: TestProps) => {
           </div>
         ))}
       </CardContent>
-      <CardFooter className="flex flex-wrap justify-center gap-4">
+      <CardFooter dir="ltr" className="flex flex-wrap justify-center gap-4">
         {Array.from({ length: question.columns.length + 1 }, (_, i) => (
           <TestButton key={i} onClick={() => onAnswer(i)}>
             {i}

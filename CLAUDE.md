@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Interactivity:** React 18.3.1 (islands architecture)
 - **Styling:** Tailwind CSS 3.4.10 + Radix UI components
 - **Charts:** Recharts 2.12.7
-- **i18n:** 5 locales (en, pl, es, it, fr) — baked at build time
+- **i18n:** 6 locales (en, pl, es, it, fr, ar) — baked at build time. Arabic (ar) is right-to-left: `<html dir>` is set via `isRtl()` in `src/i18n.ts`, and the Perceptual/Numbers/Spatial tests wrap their character displays in `dir="ltr"`.
 - **Type Safety:** TypeScript
 
 ## Common Commands
@@ -65,13 +65,13 @@ score = numCorrect - numIncorrect * (1 / (numPossibleAnswers - 1))
 All UI text lives in `src/i18n.ts` as nested objects by namespace:
 ```typescript
 ui = {
-  "test-names": { [testName]: { en, pl, es, it, fr } },
-  "results-history": { key: { en, pl, es, it, fr } },
+  "test-names": { [testName]: { en, pl, es, it, fr, ar } },
+  "results-history": { key: { en, pl, es, it, fr, ar } },
   ...
 };
 ```
 
-Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale string map passed to React components. Use `useTranslations(namespace)` hook to access strings. **Always add new translation keys to all 5 locales simultaneously.**
+Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale string map passed to React components. Use `useTranslations(namespace)` hook to access strings. **Always add new translation keys to all 6 locales simultaneously.**
 
 ### Key File Patterns
 
@@ -83,7 +83,7 @@ Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale strin
 - `types.ts` — TestName enum, TestResults type, StoredSession type
 
 **Data & Localization:**
-- `src/i18n.ts` — All UI translations (5 locales)
+- `src/i18n.ts` — All UI translations (6 locales)
 - `src/testData.ts` — Loads test question pools by locale
 - `src/components/TestApp/*/data-{locale}.ts` — Locale-specific data (words, names, etc.)
 
@@ -137,7 +137,7 @@ After modifying features:
 
 ## Notes for Contributors
 
-- **i18n:** Always update all 5 locales together. Use descriptive translation keys in kebab-case.
+- **i18n:** Always update all 6 locales together (the `LocaleValues` type enforces this at build time). Use descriptive translation keys in kebab-case.
 - **Types:** Keep TestResults, StoredSession, and TestName enum definitions in `src/components/TestApp/types.ts`.
 - **Scoring:** Don't change penalty formulas without domain knowledge of Thomas GIA scoring.
 - **Timer:** 120 seconds per test is hardcoded in TestContainer. Adjust if requirements change.

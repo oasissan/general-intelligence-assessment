@@ -44,7 +44,7 @@ const Perceptual = (props: TestProps) => {
       <CardHeader>
         <CardTitle>{t("question")}</CardTitle>
       </CardHeader>
-      <CardContent className="flex justify-center gap-4 text-2xl md:gap-6">
+      <CardContent dir="ltr" className="flex justify-center gap-4 text-2xl md:gap-6">
         {question.columns.map(([lowercase, uppercase], i) => (
           <div className="space-y-4 md:space-y-6" key={i}>
             <div className="text-center">{lowercase}</div>
@@ -52,7 +52,7 @@ const Perceptual = (props: TestProps) => {
           </div>
         ))}
       </CardContent>
-      <CardFooter className="flex flex-wrap justify-center gap-2">
+      <CardFooter dir="ltr" className="flex flex-wrap justify-center gap-2">
         {Array.from({ length: question.columns.length + 1 }, (_, i) => (
           <TestButton key={i} onClick={() => onAnswer(i)}>
             {i}
