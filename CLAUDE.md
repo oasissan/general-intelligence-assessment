@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Interactivity:** React 18.3.1 (islands architecture)
 - **Styling:** Tailwind CSS 3.4.10 + Radix UI components
 - **Charts:** Recharts 2.12.7
-- **i18n:** 5 locales (en, pl, es, it, fr) — baked at build time
+- **i18n:** 6 locales (en, pl, es, it, fr, ar) — baked at build time. Arabic (ar) is right-to-left: `<html dir>` is set via `isRtl()` in `src/i18n.ts`, and the Perceptual/Numbers/Spatial tests wrap their character displays in `dir="ltr"`.
 - **Type Safety:** TypeScript
 
 ## Common Commands
@@ -137,7 +137,7 @@ After modifying features:
 
 ## Notes for Contributors
 
-- **i18n:** Always update all 5 locales together. Use descriptive translation keys in kebab-case.
+- **i18n:** Always update all 6 locales together (the `LocaleValues` type enforces this at build time). Use descriptive translation keys in kebab-case.
 - **Types:** Keep TestResults, StoredSession, and TestName enum definitions in `src/components/TestApp/types.ts`.
 - **Scoring:** Don't change penalty formulas without domain knowledge of Thomas GIA scoring.
 - **Timer:** 120 seconds per test is hardcoded in TestContainer. Adjust if requirements change.
