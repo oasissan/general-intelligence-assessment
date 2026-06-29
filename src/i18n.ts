@@ -23,8 +23,22 @@ export function isRtl(locale: Locale): boolean {
   return RTL_LOCALES.has(locale);
 }
 
+// Astro's `Astro.url.pathname` includes the configured `base` (e.g.
+// "/general-intelligence-assessment/ar/" on GitHub Pages). Locale detection and
+// link building must operate on the base-stripped path, otherwise the base
+// segment is mistaken for the locale and `getRelativeLocaleUrl` re-prepends the
+// base. `BASE_URL` is "/" when no base is set and always ends with a slash.
+function stripBase(pathname: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  if (base && (pathname === base || pathname.startsWith(`${base}/`))) {
+    const stripped = pathname.slice(base.length);
+    return stripped.startsWith("/") ? stripped : `/${stripped}`;
+  }
+  return pathname;
+}
+
 export function getLocale(url: URL): Locale {
-  const path = url.pathname;
+  const path = stripBase(url.pathname);
   const [_, locale] = path.split("/");
 
   return LOCALES.includes(locale as Locale)
@@ -32,13 +46,17 @@ export function getLocale(url: URL): Locale {
     : DEFAULT_LOCALE;
 }
 
+// Returns the base-relative, locale-stripped path (e.g. "/test/" or "/").
+// `getRelativeLocaleUrl(locale, path)` re-adds the base and locale, so this must
+// return neither.
 export function delocalizePath(url: URL): string {
+  const path = stripBase(url.pathname);
   const locale = getLocale(url);
   if (locale === DEFAULT_LOCALE) {
-    return url.pathname;
+    return path;
   }
 
-  return url.pathname.replace(`/${locale}`, "");
+  return path.replace(`/${locale}`, "") || "/";
 }
 
 export function i18n<N extends keyof typeof ui>(locale: Locale, namespace: N) {
