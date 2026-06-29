@@ -65,13 +65,13 @@ score = numCorrect - numIncorrect * (1 / (numPossibleAnswers - 1))
 All UI text lives in `src/i18n.ts` as nested objects by namespace:
 ```typescript
 ui = {
-  "test-names": { [testName]: { en, pl, es, it, fr } },
-  "results-history": { key: { en, pl, es, it, fr } },
+  "test-names": { [testName]: { en, pl, es, it, fr, ar } },
+  "results-history": { key: { en, pl, es, it, fr, ar } },
   ...
 };
 ```
 
-Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale string map passed to React components. Use `useTranslations(namespace)` hook to access strings. **Always add new translation keys to all 5 locales simultaneously.**
+Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale string map passed to React components. Use `useTranslations(namespace)` hook to access strings. **Always add new translation keys to all 6 locales simultaneously.**
 
 ### Key File Patterns
 
@@ -83,7 +83,7 @@ Baked at build time: `bakeLocaleTranslations(locale)` creates a per-locale strin
 - `types.ts` — TestName enum, TestResults type, StoredSession type
 
 **Data & Localization:**
-- `src/i18n.ts` — All UI translations (5 locales)
+- `src/i18n.ts` — All UI translations (6 locales)
 - `src/testData.ts` — Loads test question pools by locale
 - `src/components/TestApp/*/data-{locale}.ts` — Locale-specific data (words, names, etc.)
 
