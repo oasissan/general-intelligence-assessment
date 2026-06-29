@@ -38,7 +38,7 @@ const Numbers = (props: TestProps) => {
       <CardHeader>
         <CardTitle>{t("question")}</CardTitle>
       </CardHeader>
-      <CardFooter className="flex flex-wrap justify-center gap-4">
+      <CardFooter dir="ltr" className="flex flex-wrap justify-center gap-4">
         {question.numbers.map((number) => (
           <TestButton key={number} onClick={() => onAnswer(number)}>
             {number}
