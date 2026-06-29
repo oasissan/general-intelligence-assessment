@@ -16,7 +16,7 @@ const base = isGithubPages ? "/general-intelligence-assessment" : "/";
 export default defineConfig({
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "pl", "es", "it", "fr"],
+    locales: ["en", "pl", "es", "it", "fr", "ar"],
   },
   integrations: [
     react(),
